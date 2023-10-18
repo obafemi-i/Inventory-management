@@ -1,4 +1,4 @@
-# Microservices
+# Warehouse-purchase
 
 Two microservices.
 Business.py is the payment microservice, buys from the inventory microservice, Stock.py
