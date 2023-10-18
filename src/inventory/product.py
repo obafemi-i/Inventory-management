@@ -14,7 +14,7 @@ def product_info(redis):
     return Product
 
 
-class ProductResult(BaseModel):
+class ProductModel(BaseModel):
     name: str
     price: float
     quantity_available: int

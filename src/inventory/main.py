@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from redis_om import get_redis_connection
+from redis_om import get_redis_connection, NotFoundError
 
 from product import product_info, ProductResult
 
@@ -50,6 +50,13 @@ async def create_product(prods: ProductResult):
 
 @app.get('/products/{pk}')
 async def get_one(pk: str):
-    product_data = Products.get(pk)
-    return product_data
+    try:
+        product_data = Products.get(pk)
+        return product_data
+    except NotFoundError:
+        return {'Message': 'No product'}
+
+@app.delete('/products/{pk}')
+async def get_one(pk: str):
+    return Products.delete(pk)
  
