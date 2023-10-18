@@ -1,10 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.requests import Request
+
 from redis_om import get_redis_connection, NotFoundError
+from dotenv import dotenv_values
 
 from order import order_info, OrderModel
 
+
+config = dotenv_values()
 
 app = FastAPI()
 
@@ -16,9 +20,9 @@ app.add_middleware(
 )
 
 redis_connect = get_redis_connection(
-    host='redis-15425.c72.eu-west-1-2.ec2.cloud.redislabs.com',
-    port=15425,
-    password='aMfi11n9Y62jzanGo90wRJulBDpa1f2r',
+    host=config.get('HOST'),
+    port=config.get('PORT'),
+    password=config.get('PASSWORD'),
     decode_responses=True
 )
 
