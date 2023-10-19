@@ -27,11 +27,6 @@ redis_connect = get_redis_connection(
 Products = product_info(redis_connect)
 
 
-@app.get('/products')
-async def all():
-    return [await format(pk) for pk in Products.all_pks()]
-
-
 async def format(pk: str):
     product = Products.get(pk)
 
@@ -39,8 +34,13 @@ async def format(pk: str):
         'id': product.pk,
         'name': product.name,
         'price': product.price,
-        'quantity': product.quantity_available
+        'quantity': int(product.quantity_available)
     }
+
+
+@app.get('/products')
+async def all():
+    return [await format(pk) for pk in Products.all_pks()]
 
 
 @app.post('/products')
@@ -54,10 +54,10 @@ async def create_product(prods: ProductModel):
 @app.get('/products/{pk}')
 async def get_one(pk: str):
     try:
-        product_data = Products.get(pk)
-        return product_data
+        return await format(pk)
     except NotFoundError:
         return {'Message': 'No product'}
+
 
 @app.delete('/products/{pk}')
 async def get_one(pk: str):
