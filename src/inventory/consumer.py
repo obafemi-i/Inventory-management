@@ -16,6 +16,5 @@ while True:
         redis_connect.xreadgroup(group, key, {key: '>'}, None)
     except Exception as e:
         print(str(e))
-    time.sleep(1)
-
-    
+        
+    time.sleep(5)
