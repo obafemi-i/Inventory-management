@@ -1,4 +1,4 @@
-# Warehouse-purchase
+# Inventory-management
 
 A microservice with payment and inventory services.
 
