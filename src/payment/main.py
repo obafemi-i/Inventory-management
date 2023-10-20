@@ -21,6 +21,7 @@ app.add_middleware(
     allow_headers = ['*']
 )
 
+# redis connection configuration
 redis_connect = get_redis_connection(
     host=config.get('HOST'),
     port=config.get('PORT'),
@@ -35,7 +36,6 @@ Orders = order_info(redis_connect)
 async def get_single_order(pk: str):
     orders = Orders.get(pk)
     return orders
-
 
 
 @app.post('/orders')
@@ -64,8 +64,10 @@ async def create_order(request: Request, background_tasks: BackgroundTasks):
 
     return order
 
+
+# background task for status of product ordered, from 'pending' to 'complete'
 def completed(order: Orders):
     time.sleep(5)
     order.status = 'completed'
     order.save()
-    redis_connect.xadd('order_completed', order.model_dump(), '*')
+    redis_connect.xadd('order_completed', order.dict(), '*')

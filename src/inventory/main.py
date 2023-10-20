@@ -16,7 +16,7 @@ app.add_middleware(
     allow_headers = ['*']
 )
 
-
+# redis connection configuration
 redis_connect = get_redis_connection(
     host=config.get('HOST'),
     port=config.get('PORT'),
@@ -27,6 +27,7 @@ redis_connect = get_redis_connection(
 Products = product_info(redis_connect)
 
 
+# format of returned products
 async def format(pk: str):
     product = Products.get(pk)
 
