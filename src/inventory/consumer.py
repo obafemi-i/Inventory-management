@@ -22,9 +22,12 @@ while True:
                 obj = result[1][0][1]
                 product = Products.get(obj['product_id'])
                 
-                print(product)
-                product.quantity_available = int(product.quantity_available) - int(obj['quantity'])
-                product.save()
+                try:
+                    print(product)
+                    product.quantity_available = int(product.quantity_available) - int(obj['quantity'])
+                    product.save()
+                except:
+                    redis_connect.xadd('refund_order', obj, '*')
 
         
     except Exception as e:
